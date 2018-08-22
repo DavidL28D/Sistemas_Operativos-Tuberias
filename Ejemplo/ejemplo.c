@@ -15,18 +15,23 @@ int main () {
     pipe (descr);
     
     if (fork () == 0) {
-        
+        //cierra el descriptor de lectura
         close (descr[LEER]);
+        // escribe en el pipe la frase
         write (descr[ESCRIBIR], frase, strlen(frase));
+        //cierra el descriptor de escritura
         close (descr[ESCRIBIR]);
         
     }else{
-        
+        //Cierra el descriptor de escritura
         close (descr[ESCRIBIR]);
+        //lee del pipe y guarda en mensaje
         bytesleidos = read (descr[LEER], mensaje, 100);
         mensaje[bytesleidos]='\0';
+
         printf ("Bytes leidos: %d\n", bytesleidos);
         printf ("Mensaje del Padre: %s\n", mensaje);
+        //cierra el descriptor de lectura
         close (descr[LEER]);
         
     }
